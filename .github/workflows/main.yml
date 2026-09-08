@@ -23,8 +23,10 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Run Crawler Script
+      - - name: Run Crawler Script
         env:
-          # Pulls the Google credentials from your repository secrets
+          PYTHONUNBUFFERED: "1"
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-        run: python crawler.py
+          GOOGLE_SEARCH_API_KEY: ${{ secrets.GOOGLE_SEARCH_API_KEY }}
+          GOOGLE_SEARCH_CX: ${{ secrets.GOOGLE_SEARCH_CX }}
+        run: python -u crawler.py
