@@ -20,10 +20,10 @@ def main():
         return
 
     search_queries = [
-        'site:linkedin.com/in/ founder fintech payments latam new york',
-        'site:linkedin.com/in/ co-founder fintech payments africa new york',
-        'site:linkedin.com/in/ CEO compliance KYB emerging markets new york',
-        'site:linkedin.com/in/ founding team cross-border fintech latam africa new york'
+        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("fintech" OR "payments" OR "cross-border") ("latam" OR "latin america" OR "africa") ("new york" OR "greater new york city area")',
+        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("fintech" OR "payments" OR "cross-border") ("se asia" OR "southeast asia" OR "india") ("new york" OR "greater new york city area")',
+        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("KYB" OR "compliance") ("latam" OR "africa" OR "india" OR "se asia" OR "emerging markets") ("new york" OR "greater new york city area")',
+        'site:linkedin.com/in/ ("Founding GTM" OR "Founding Team") ("fintech" OR "payments" OR "cross-border" OR "compliance") ("latam" OR "africa" OR "india" OR "se asia" OR "emerging markets") ("new york" OR "greater new york city area")'
     ]
 
     print("Starting SerpApi crawler...")
