@@ -20,12 +20,11 @@ def main():
         print("CRITICAL ERROR: Missing GOOGLE_SEARCH_API_KEY or GOOGLE_SEARCH_CX environment variables.")
         return
 
-    # target queries under Google's 32-word limit
     search_queries = [
-        'site:linkedin.com/in/ founder fintech payments latam new york',
-        'site:linkedin.com/in/ co-founder fintech payments africa new york',
-        'site:linkedin.com/in/ CEO compliance KYB emerging markets new york',
-        'site:linkedin.com/in/ founding team cross-border fintech latam africa new york'
+        'founder fintech payments latam new york',
+        'co-founder fintech payments africa new york',
+        'CEO compliance KYB emerging markets new york',
+        'founding team cross-border fintech latam africa new york'
     ]
 
     print("Starting API crawler...")
@@ -53,7 +52,7 @@ def main():
                 items = data.get('items', [])
 
                 if not items:
-                    print(f"No more results found for this query at start index {start_index}.")
+                    print(f"No more results found at start index {start_index}.")
                     break
 
                 for item in items:
@@ -62,8 +61,19 @@ def main():
                     snippet = item.get('snippet', '')
 
                     if "linkedin.com/in/" in link:
-                        sheet.append_row([title, link, snippet, query])
-                        print(f"Logged: {link}")
+                        text_to_check = (title + " " + snippet).lower()
+                        has_ny = any(term in text_to_check for term in [
+                            "new york", 
+                            "greater new york", 
+                            "nyc", 
+                            "new york city"
+                        ])
+                        
+                        if has_ny:
+                            sheet.append_row([title, link, snippet, query])
+                            print(f"Verified & Logged (NY): {link}")
+                        else:
+                            print(f"Filtered out (Not NY): {link}")
 
             except Exception as e:
                 print(f"Error executing API request: {e}")
