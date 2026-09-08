@@ -22,10 +22,10 @@ def main():
 
     # target queries under Google's 32-word limit
     search_queries = [
-        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("fintech" OR "payments" OR "cross-border") ("latam" OR "latin america") ("new york" OR "greater new york city area")',
-        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("fintech" OR "payments" OR "cross-border") ("africa" OR "emerging markets") ("new york" OR "greater new york city area")',
-        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("KYB" OR "compliance") ("latam" OR "latin america" OR "africa" OR "emerging markets") ("new york" OR "greater new york city area")',
-        'site:linkedin.com/in/ ("Founding GTM" OR "Founding Team") ("fintech" OR "payments" OR "cross-border" OR "KYB" OR "compliance") ("latam" OR "africa" OR "emerging markets") "new york"'
+        'site:linkedin.com/in/ founder fintech payments latam new york',
+        'site:linkedin.com/in/ co-founder fintech payments africa new york',
+        'site:linkedin.com/in/ CEO compliance KYB emerging markets new york',
+        'site:linkedin.com/in/ founding team cross-border fintech latam africa new york'
     ]
 
     print("Starting API crawler...")
