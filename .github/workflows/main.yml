@@ -2,9 +2,8 @@ name: Run Fintech Founder Crawler
 
 on:
   schedule:
-    # Runs every Monday at 9:00 AM UTC
     - cron: '0 9 * * 1'
-  workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
+  workflow_dispatch:
 
 jobs:
   run-crawler:
@@ -27,6 +26,4 @@ jobs:
         env:
           PYTHONUNBUFFERED: "1"
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          GOOGLE_SEARCH_API_KEY: ${{ secrets.GOOGLE_SEARCH_API_KEY }}
-          GOOGLE_SEARCH_CX: ${{ secrets.GOOGLE_SEARCH_CX }}
         run: python -u crawler.py
