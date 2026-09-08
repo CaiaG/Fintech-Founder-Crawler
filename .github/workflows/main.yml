@@ -26,4 +26,5 @@ jobs:
         env:
           PYTHONUNBUFFERED: "1"
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
         run: python -u crawler.py
