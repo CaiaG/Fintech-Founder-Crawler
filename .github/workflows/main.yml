@@ -23,7 +23,7 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - - name: Run Crawler Script
+      - name: Run Crawler Script
         env:
           PYTHONUNBUFFERED: "1"
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
