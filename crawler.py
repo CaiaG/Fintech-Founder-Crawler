@@ -75,8 +75,8 @@ def main():
                             existing_links.add(link)
                             print(f"Verified & Logged: {link}")
 
-        except Exception as e:
-            print(f"Error executing query: {e}")
+            except Exception as e:
+                print(f"Error executing query: {e}")
 
 if __name__ == "__main__":
     main()
