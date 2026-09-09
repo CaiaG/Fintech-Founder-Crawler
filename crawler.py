@@ -20,22 +20,31 @@ def main():
         return
 
     search_queries = [
-        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("fintech" OR "payments" OR "cross-border") ("latam" OR "latin america" OR "africa") ("new york" OR "greater new york city area")',
-        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("fintech" OR "payments" OR "cross-border") ("se asia" OR "southeast asia" OR "india") ("new york" OR "greater new york city area")',
-        'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("KYB" OR "compliance") ("latam" OR "africa" OR "india" OR "se asia" OR "emerging markets") ("new york" OR "greater new york city area")',
-        'site:linkedin.com/in/ ("Founding GTM" OR "Founding Team") ("fintech" OR "payments" OR "cross-border" OR "compliance") ("latam" OR "africa" OR "india" OR "se asia" OR "emerging markets") ("new york" OR "greater new york city area")'
+    'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("fintech" OR "payments" OR "cross-border") ("latam" OR "latin america" OR "africa") ("new york" OR "greater new york city area")',
+    'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("fintech" OR "payments" OR "cross-border") ("se asia" OR "southeast asia" OR "india") ("new york" OR "greater new york city area")',
+    'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("KYB" OR "compliance") ("latam" OR "africa" OR "india" OR "se asia" OR "emerging markets") ("new york" OR "greater new york city area")',
+    'site:linkedin.com/in/ ("Founding GTM" OR "Founding Team") ("fintech" OR "payments" OR "cross-border" OR "compliance") ("latam" OR "africa" OR "india" OR "se asia" OR "emerging markets") ("new york" OR "greater new york city area")',
+    'site:linkedin.com/in/ ("founder" OR "co-founder" OR "CEO") ("embedded finance" OR "lending" OR "remittances" OR "neobank" OR "b2b payments") ("latam" OR "africa" OR "india" OR "se asia") ("new york" OR "greater new york city area")',
+    'site:linkedin.com/in/ ("founder" OR "co-founder") ("YC" OR "Y Combinator" OR "Techstars") ("fintech" OR "payments") ("latam" OR "africa" OR "india" OR "southeast asia") ("new york" OR "nyc")',
+    'site:linkedin.com/in/ ("founder" OR "co-founder") "fintech" ("latam" OR "africa" OR "india" OR "southeast asia") ("manhattan" OR "brooklyn" OR "nyc metro")',
+    'site:wellfound.com/u/ ("founder" OR "CEO") ("fintech" OR "payments") ("latam" OR "africa" OR "india" OR "southeast asia") "New York"'
     ]
 
     print("Starting SerpApi crawler...")
 
     for query in search_queries:
-        print(f"\n--- Executing query: {query} ---")
+    print(f"\n--- Executing query: {query} ---")
+    
+    for page in range(3):
+        start_index = page * 10
+        print(f"Checking page {page + 1} (start={start_index})...")
         
         params = {
             "engine": "google",
             "q": query,
             "api_key": api_key,
-            "num": 10
+            "num": 10,
+            "start": start_index
         }
 
         try:
@@ -44,8 +53,8 @@ def main():
             items = results.get("organic_results", [])
 
             if not items:
-                print("No results found.")
-                continue
+                print("No results found on this page. Moving to next query.")
+                break
 
             for item in items:
                 link = item.get('link', '')
