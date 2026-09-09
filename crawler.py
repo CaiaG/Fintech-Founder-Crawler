@@ -35,45 +35,45 @@ def main():
     for query in search_queries:
     print(f"\n--- Executing query: {query} ---")
     
-    for page in range(3):
-        start_index = page * 10
-        print(f"Checking page {page + 1} (start={start_index})...")
-        
-        params = {
-            "engine": "google",
-            "q": query,
-            "api_key": api_key,
-            "num": 10,
-            "start": start_index
-        }
-
-        try:
-            search = GoogleSearch(params)
-            results = search.get_dict()
-            items = results.get("organic_results", [])
-
-            if not items:
-                print("No results found on this page. Moving to next query.")
-                break
-
-            for item in items:
-                link = item.get('link', '')
-                title = item.get('title', '')
-                snippet = item.get('snippet', '')
-
-                if "linkedin.com/in/" in link:
-                    if link in existing_links:
-                        continue
-
-                    text_to_check = (title + " " + snippet).lower()
-                    has_ny = any(term in text_to_check for term in [
-                        "new york", "greater new york", "nyc", "new york city"
-                    ])
-                    
-                    if has_ny:
-                        sheet.append_row([title, link, snippet, query])
-                        existing_links.add(link)
-                        print(f"Verified & Logged: {link}")
+        for page in range(3):
+            start_index = page * 10
+            print(f"Checking page {page + 1} (start={start_index})...")
+            
+            params = {
+                "engine": "google",
+                "q": query,
+                "api_key": api_key,
+                "num": 10,
+                "start": start_index
+            }
+    
+            try:
+                search = GoogleSearch(params)
+                results = search.get_dict()
+                items = results.get("organic_results", [])
+    
+                if not items:
+                    print("No results found on this page. Moving to next query.")
+                    break
+    
+                for item in items:
+                    link = item.get('link', '')
+                    title = item.get('title', '')
+                    snippet = item.get('snippet', '')
+    
+                    if "linkedin.com/in/" in link:
+                        if link in existing_links:
+                            continue
+    
+                        text_to_check = (title + " " + snippet).lower()
+                        has_ny = any(term in text_to_check for term in [
+                            "new york", "greater new york", "nyc", "new york city"
+                        ])
+                        
+                        if has_ny:
+                            sheet.append_row([title, link, snippet, query])
+                            existing_links.add(link)
+                            print(f"Verified & Logged: {link}")
 
         except Exception as e:
             print(f"Error executing query: {e}")
