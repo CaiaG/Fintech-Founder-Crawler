@@ -33,7 +33,7 @@ def main():
     print("Starting SerpApi crawler...")
 
     for query in search_queries:
-    print(f"\n--- Executing query: {query} ---")
+        print(f"\n--- Executing query: {query} ---")
     
         for page in range(3):
             start_index = page * 10
