@@ -22,28 +22,28 @@ def main():
         return
 
     search_queries = [
-    # Top Tier LatAm Markets (Mexico, Brazil, Colombia, Argentina, Chile)
-    'site:linkedin.com/in/ ("Partner" OR "General Partner" OR "Director" OR "Investor") ("venture capital" OR "family office" OR "VC") ("Brazil" OR "Mexico" OR "Colombia" OR "Argentina" OR "Chile") ("madrid" OR "london")',
-    'site:linkedin.com/in/ ("Head of Investments" OR "Investment Manager") ("family office" OR "venture capital") ("Brasil" OR "México" OR "Colombia" OR "Argentina" OR "Chile") ("madrid" OR "london" OR "europe")',
-    
-    # Regional & Secondary LatAm Markets (Peru, Uruguay, Miami/LatAm Hubs, Iberoamerica)
-    'site:linkedin.com/in/ ("Partner" OR "Investor" OR "Managing Director") ("venture capital" OR "family office") ("Peru" OR "Uruguay" OR "Ecuador" OR "Iberoamerica" OR "South America") ("madrid" OR "london")',
-    'site:linkedin.com/in/ ("Socio" OR "Director de Inversiones") ("fondo de inversión" OR "family office") ("México" OR "Brasil" OR "Colombia" OR "Hispanoamérica") ("madrid" OR "españa")',
-    
-    # Spanish Capital & Dual-HQ Cross-Border Focus
-    'site:linkedin.com/in/ ("VC" OR "venture capital" OR "angel investor") ("cross-border" OR "Spain-LatAm" OR "Iberoamerica") ("madrid" OR "london" OR "europe")',
-    'site:linkedin.com/company/ ("venture capital" OR "family office") ("Brazil" OR "Mexico" OR "Colombia" OR "Argentina" OR "LatAm") ("madrid" OR "london")',
-
-    # Platform & Directory Searches (Updated)
-    'site:openvc.app ("Brazil" OR "Mexico" OR "Colombia" OR "Chile" OR "LatAm") ("madrid" OR "london" OR "europe")',
-    'site:dealroom.co "invests in" ("Brazil" OR "Mexico" OR "Colombia" OR "Latin America") ("spain" OR "uk" OR "madrid" OR "london")',
-    'site:wellfound.com/u/ ("investor" OR "partner") ("Brazil" OR "Mexico" OR "Colombia" OR "LatAm") ("madrid" OR "london")',
-    
-    # Web & Document Mining
-    'filetype:pdf ("venture capital" OR "family office") ("Brazil" OR "Mexico" OR "Colombia" OR "LatAm") ("madrid" OR "london") ("portfolio" OR "thesis")',
-    '("fondo de inversión" OR "family office") ("madrid" OR "españa") ("México" OR "Colombia" OR "Brasil" OR "América Latina") "venture capital"'
-]
-
+        'site:linkedin.com/in/ "Venture Capital" "Madrid" "Latin America"',
+        'site:linkedin.com/in/ "Venture Capital" "Madrid" "LatAm"',
+        'site:linkedin.com/in/ "Family Office" "Madrid" "Latin America"',
+        'site:linkedin.com/in/ "Fondo de inversión" "Madrid" "América Latina"',
+        'site:linkedin.com/in/ "Partner" "Venture Capital" "Madrid" "Mexico"',
+        'site:linkedin.com/in/ "Partner" "Venture Capital" "Madrid" "Brazil"',
+        
+        'site:linkedin.com/in/ "Venture Capital" "London" "Latin America"',
+        'site:linkedin.com/in/ "Venture Capital" "London" "LatAm"',
+        'site:linkedin.com/in/ "Family Office" "London" "Latin America"',
+        'site:linkedin.com/in/ "Partner" "Venture Capital" "London" "Brazil"',
+        'site:linkedin.com/in/ "Partner" "Venture Capital" "London" "Mexico"',
+        
+        'site:linkedin.com/in/ ("Seaya" OR "Mundi Ventures" OR "Wayra" OR "Kibo Ventures") ("Partner" OR "Investor" OR "Director")',
+        'site:linkedin.com/in/ ("SoftBank" OR "Bonsai Partners" OR "Allianz X") ("London" OR "Madrid") ("Latin America" OR "LatAm")',
+        
+        'site:openvc.app ("Latin America" OR "LatAm") ("Madrid" OR "London")',
+        'site:dealroom.co "invests in" ("Latin America" OR "LatAm") ("Spain" OR "UK")',
+        
+        '"venture capital" "Madrid" "Latin America" site:techcrunch.com OR site:latamlist.com',
+        '"venture capital" "London" "Latin America" site:latamlist.com OR site:contxto.com'
+    ]
     print("Starting SerpApi crawler...")
 
     for query in search_queries:
@@ -80,23 +80,31 @@ def main():
                             continue
     
                         text_to_check = (title + " " + snippet).lower()
-
                         has_target_location = any(term in text_to_check for term in [
-                            "madrid", "spain", "españa", "london", "uk", "united kingdom", "europe", "europa"
+                            "madrid", "spain", "españa", "london", "uk", "united kingdom"
                         ])
                         
-                        # Expanded LatAm & Country Focus Terms
                         has_latam_focus = any(term in text_to_check for term in [
-                            # Regional
-                            "latam", "latin america", "américa latina", "spanish america", "south america", "iberoamerica", "hispanoamérica",
-                            # Specific Major Countries
-                            "brazil", "brasil", "mexico", "méxico", "colombia", "argentina", "chile", "peru", "perú", "uruguay"
+                            "latam", "latin america", "américa latina", "brazil", "brasil", "mexico", "méxico", 
+                            "colombia", "chile", "argentina", "peru", "uruguay"
                         ])
                         
-                        if has_target_location and has_latam_focus:
-                            sheet.append_row([title, link, snippet, query])
-                            existing_links.add(link)
-                            print(f"Verified & Logged: {link}")
+                        has_investment_role = any(term in text_to_check for term in [
+                            "venture capital", "vc", "family office", "angel investor", "general partner", 
+                            "managing director", "investment director", "seed fund", "partner", "investor"
+                        ])
+                        
+                        is_unwanted = any(term in text_to_check for term in [
+                            "npl", "distressed", "real estate", "inmobiliario", "debt", "restructuring", 
+                            "esg", "sustainability", "consulting", "wealth management", "services", "legal", 
+                            "advisory", "concierge", "tax advisory", "private clients", "spear's 500"
+                        ])
+                        
+                        if has_target_location and has_latam_focus and has_investment_role and not is_unwanted:
+                            if link not in existing_links:
+                                sheet.append_row([title, link, snippet, query])
+                                existing_links.add(link)
+                                print(f"Verified & Logged: {link}")
 
             except Exception as e:
                 print(f"Error executing query: {e}")
