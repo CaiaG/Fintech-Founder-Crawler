@@ -22,27 +22,16 @@ def main():
         return
 
     search_queries = [
-        'site:linkedin.com/in/ "Venture Capital" "Madrid" "Latin America"',
-        'site:linkedin.com/in/ "Venture Capital" "Madrid" "LatAm"',
-        'site:linkedin.com/in/ "Family Office" "Madrid" "Latin America"',
-        'site:linkedin.com/in/ "Fondo de inversión" "Madrid" "América Latina"',
-        'site:linkedin.com/in/ "Partner" "Venture Capital" "Madrid" "Mexico"',
-        'site:linkedin.com/in/ "Partner" "Venture Capital" "Madrid" "Brazil"',
+        '("Seaya" OR "Mundi Ventures" OR "Wayra" OR "Kibo Ventures") ("Partner" OR "Investor" OR "Director") "Madrid" linkedin',
+        '("SoftBank" OR "Headline" OR "General Atlantic" OR "Actis") ("LatAm" OR "Latin America") "London" linkedin',
         
-        'site:linkedin.com/in/ "Venture Capital" "London" "Latin America"',
-        'site:linkedin.com/in/ "Venture Capital" "London" "LatAm"',
-        'site:linkedin.com/in/ "Family Office" "London" "Latin America"',
-        'site:linkedin.com/in/ "Partner" "Venture Capital" "London" "Brazil"',
-        'site:linkedin.com/in/ "Partner" "Venture Capital" "London" "Mexico"',
-        
-        'site:linkedin.com/in/ ("Seaya" OR "Mundi Ventures" OR "Wayra" OR "Kibo Ventures") ("Partner" OR "Investor" OR "Director")',
-        'site:linkedin.com/in/ ("SoftBank" OR "Bonsai Partners" OR "Allianz X") ("London" OR "Madrid") ("Latin America" OR "LatAm")',
+        '"venture capital" "Latin America" ("Madrid" OR "Spain") site:techcrunch.com OR site:latamlist.com',
+        '"venture capital" "LatAm" ("London" OR "UK") site:contxto.com OR site:latamlist.com',
+        '"family office" ("Latin America" OR "LatAm") ("Madrid" OR "London") "invested" OR "round"',
         
         'site:openvc.app ("Latin America" OR "LatAm") ("Madrid" OR "London")',
-        'site:dealroom.co "invests in" ("Latin America" OR "LatAm") ("Spain" OR "UK")',
-        
-        '"venture capital" "Madrid" "Latin America" site:techcrunch.com OR site:latamlist.com',
-        '"venture capital" "London" "Latin America" site:latamlist.com OR site:contxto.com'
+        'site:dealroom.co "invests in" ("Latin America" OR "LatAm") ("Madrid" OR "London")',
+        'site:crunchbase.com/organization ("venture capital" OR "family office") ("Madrid" OR "London") "Latin America"'
     ]
     print("Starting SerpApi crawler...")
 
