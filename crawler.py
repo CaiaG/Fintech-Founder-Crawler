@@ -75,14 +75,19 @@ def main():
                             continue
     
                         text_to_check = (title + " " + snippet).lower()
-                        has_ny = any(term in text_to_check for term in [
-                            "new york", "greater new york", "nyc", "new york city"
+
+                        has_target_location = any(term in text_to_check for term in [
+                            "madrid", "spain", "españa", "london", "uk", "united kingdom", "europe", "europa"
                         ])
                         
-                        if has_ny:
+                        has_latam_focus = any(term in text_to_check for term in [
+                            "latam", "latin america", "américa latina", "spanish america", "south america"
+                        ])
+                        
+                        if has_target_location and has_latam_focus:
                             sheet.append_row([title, link, snippet, query])
                             existing_links.add(link)
-                            print(f"Verified & Logged: {link}")
+                            print(f"Verified & Logged: {link}
 
             except Exception as e:
                 print(f"Error executing query: {e}")
