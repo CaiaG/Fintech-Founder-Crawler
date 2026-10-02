@@ -9,8 +9,10 @@ def main():
     creds_json = json.loads(os.environ['GCP_CREDENTIALS'])
     creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_json, scope)
     client = gspread.authorize(creds)
+
+    spreadsheet = client.open("Fintech Founders NYC")
+    sheet = spreadsheet.get_worksheet(1)
     
-    sheet = client.open("Fintech Founders NYC").sheet2
     existing_links = set(sheet.col_values(2))
     print(f"Loaded {len(existing_links)} existing profiles from Google Sheet.")
 
@@ -20,24 +22,19 @@ def main():
         return
 
     search_queries = [
-    # LinkedIn X-Ray: Investors & Decision Makers (Madrid / London / Europe)
     'site:linkedin.com/in/ ("Partner" OR "General Partner" OR "Managing Director" OR "Investor") ("VC" OR "venture capital" OR "family office") ("latam" OR "latin america") ("madrid" OR "london")',
     'site:linkedin.com/in/ ("Head of Investments" OR "Investment Director" OR "Investment Manager") ("family office" OR "venture capital") ("latam" OR "latin america") ("madrid" OR "london" OR "europe")',
     'site:linkedin.com/in/ ("Socio" OR "Director de Inversiones") ("fondo de inversion" OR "family office" OR "venture capital") ("latam" OR "america latina") ("madrid" OR "españa")',
     
-    # LinkedIn X-Ray: Funds & Networks (Europe to LatAm)
     'site:linkedin.com/in/ ("VC" OR "venture capital" OR "angel investor") ("cross-border" OR "bridge") ("latam" OR "latin america") ("madrid" OR "london" OR "europe")',
     'site:linkedin.com/company/ ("venture capital" OR "family office" OR "investment fund") ("latam" OR "latin america") ("madrid" OR "london" OR "spain" OR "uk")',
     
-    # Platform & Directory Specific Searches
     'site:openvc.app ("latam" OR "latin america") ("madrid" OR "london" OR "europe")',
     'site:dealroom.co "invests in" ("latam" OR "latin america") ("madrid" OR "london" OR "spain" OR "uk")',
     'site:wellfound.com/u/ ("investor" OR "partner" OR "venture partner") ("latam" OR "latin america") ("madrid" OR "london")',
     
-    # Document & Strategy Mining
     'filetype:pdf ("venture capital" OR "family office") ("latam" OR "latin america") ("madrid" OR "london" OR "europe") ("portfolio" OR "thesis" OR "investment strategy")',
     
-    # Broad Web Searches
     '("venture capital" OR "family office" OR "angel network") ("invests in" OR "portfolio") ("latam" OR "latin america") ("madrid" OR "london")',
     '("fondo de inversion" OR "family office") ("madrid" OR "españa") ("latam" OR "america latina") "venture capital"'
 ]
