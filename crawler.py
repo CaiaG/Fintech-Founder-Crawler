@@ -87,7 +87,7 @@ def main():
                         if has_target_location and has_latam_focus:
                             sheet.append_row([title, link, snippet, query])
                             existing_links.add(link)
-                            print(f"Verified & Logged: {link}
+                            print(f"Verified & Logged: {link}")
 
             except Exception as e:
                 print(f"Error executing query: {e}")
