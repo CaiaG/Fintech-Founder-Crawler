@@ -22,21 +22,26 @@ def main():
         return
 
     search_queries = [
-    'site:linkedin.com/in/ ("Partner" OR "General Partner" OR "Managing Director" OR "Investor") ("VC" OR "venture capital" OR "family office") ("latam" OR "latin america") ("madrid" OR "london")',
-    'site:linkedin.com/in/ ("Head of Investments" OR "Investment Director" OR "Investment Manager") ("family office" OR "venture capital") ("latam" OR "latin america") ("madrid" OR "london" OR "europe")',
-    'site:linkedin.com/in/ ("Socio" OR "Director de Inversiones") ("fondo de inversion" OR "family office" OR "venture capital") ("latam" OR "america latina") ("madrid" OR "españa")',
+    # Top Tier LatAm Markets (Mexico, Brazil, Colombia, Argentina, Chile)
+    'site:linkedin.com/in/ ("Partner" OR "General Partner" OR "Director" OR "Investor") ("venture capital" OR "family office" OR "VC") ("Brazil" OR "Mexico" OR "Colombia" OR "Argentina" OR "Chile") ("madrid" OR "london")',
+    'site:linkedin.com/in/ ("Head of Investments" OR "Investment Manager") ("family office" OR "venture capital") ("Brasil" OR "México" OR "Colombia" OR "Argentina" OR "Chile") ("madrid" OR "london" OR "europe")',
     
-    'site:linkedin.com/in/ ("VC" OR "venture capital" OR "angel investor") ("cross-border" OR "bridge") ("latam" OR "latin america") ("madrid" OR "london" OR "europe")',
-    'site:linkedin.com/company/ ("venture capital" OR "family office" OR "investment fund") ("latam" OR "latin america") ("madrid" OR "london" OR "spain" OR "uk")',
+    # Regional & Secondary LatAm Markets (Peru, Uruguay, Miami/LatAm Hubs, Iberoamerica)
+    'site:linkedin.com/in/ ("Partner" OR "Investor" OR "Managing Director") ("venture capital" OR "family office") ("Peru" OR "Uruguay" OR "Ecuador" OR "Iberoamerica" OR "South America") ("madrid" OR "london")',
+    'site:linkedin.com/in/ ("Socio" OR "Director de Inversiones") ("fondo de inversión" OR "family office") ("México" OR "Brasil" OR "Colombia" OR "Hispanoamérica") ("madrid" OR "españa")',
     
-    'site:openvc.app ("latam" OR "latin america") ("madrid" OR "london" OR "europe")',
-    'site:dealroom.co "invests in" ("latam" OR "latin america") ("madrid" OR "london" OR "spain" OR "uk")',
-    'site:wellfound.com/u/ ("investor" OR "partner" OR "venture partner") ("latam" OR "latin america") ("madrid" OR "london")',
+    # Spanish Capital & Dual-HQ Cross-Border Focus
+    'site:linkedin.com/in/ ("VC" OR "venture capital" OR "angel investor") ("cross-border" OR "Spain-LatAm" OR "Iberoamerica") ("madrid" OR "london" OR "europe")',
+    'site:linkedin.com/company/ ("venture capital" OR "family office") ("Brazil" OR "Mexico" OR "Colombia" OR "Argentina" OR "LatAm") ("madrid" OR "london")',
+
+    # Platform & Directory Searches (Updated)
+    'site:openvc.app ("Brazil" OR "Mexico" OR "Colombia" OR "Chile" OR "LatAm") ("madrid" OR "london" OR "europe")',
+    'site:dealroom.co "invests in" ("Brazil" OR "Mexico" OR "Colombia" OR "Latin America") ("spain" OR "uk" OR "madrid" OR "london")',
+    'site:wellfound.com/u/ ("investor" OR "partner") ("Brazil" OR "Mexico" OR "Colombia" OR "LatAm") ("madrid" OR "london")',
     
-    'filetype:pdf ("venture capital" OR "family office") ("latam" OR "latin america") ("madrid" OR "london" OR "europe") ("portfolio" OR "thesis" OR "investment strategy")',
-    
-    '("venture capital" OR "family office" OR "angel network") ("invests in" OR "portfolio") ("latam" OR "latin america") ("madrid" OR "london")',
-    '("fondo de inversion" OR "family office") ("madrid" OR "españa") ("latam" OR "america latina") "venture capital"'
+    # Web & Document Mining
+    'filetype:pdf ("venture capital" OR "family office") ("Brazil" OR "Mexico" OR "Colombia" OR "LatAm") ("madrid" OR "london") ("portfolio" OR "thesis")',
+    '("fondo de inversión" OR "family office") ("madrid" OR "españa") ("México" OR "Colombia" OR "Brasil" OR "América Latina") "venture capital"'
 ]
 
     print("Starting SerpApi crawler...")
@@ -80,8 +85,12 @@ def main():
                             "madrid", "spain", "españa", "london", "uk", "united kingdom", "europe", "europa"
                         ])
                         
+                        # Expanded LatAm & Country Focus Terms
                         has_latam_focus = any(term in text_to_check for term in [
-                            "latam", "latin america", "américa latina", "spanish america", "south america"
+                            # Regional
+                            "latam", "latin america", "américa latina", "spanish america", "south america", "iberoamerica", "hispanoamérica",
+                            # Specific Major Countries
+                            "brazil", "brasil", "mexico", "méxico", "colombia", "argentina", "chile", "peru", "perú", "uruguay"
                         ])
                         
                         if has_target_location and has_latam_focus:
