@@ -21,18 +21,22 @@ def main():
         print("CRITICAL ERROR: Missing SERPAPI_API_KEY environment variable.")
         return
 
-    search_queries = [
-        '("Seaya" OR "Mundi Ventures" OR "Wayra" OR "Kibo Ventures") ("Partner" OR "Investor" OR "Director") "Madrid" linkedin',
-        '("SoftBank" OR "Headline" OR "General Atlantic" OR "Actis") ("LatAm" OR "Latin America") "London" linkedin',
-        
-        '"venture capital" "Latin America" ("Madrid" OR "Spain") site:techcrunch.com OR site:latamlist.com',
-        '"venture capital" "LatAm" ("London" OR "UK") site:contxto.com OR site:latamlist.com',
-        '"family office" ("Latin America" OR "LatAm") ("Madrid" OR "London") "invested" OR "round"',
-        
-        'site:openvc.app ("Latin America" OR "LatAm") ("Madrid" OR "London")',
-        'site:dealroom.co "invests in" ("Latin America" OR "LatAm") ("Madrid" OR "London")',
-        'site:crunchbase.com/organization ("venture capital" OR "family office") ("Madrid" OR "London") "Latin America"'
-    ]
+search_queries = [
+    '"fintech" "venture capital" ("Madrid" OR "London") "Latin America" site:techcrunch.com OR site:latamlist.com',
+    '"insurtech" OR "paytech" OR "embedded finance" ("Madrid" OR "London") "LatAm" site:contxto.com',
+    
+    'site:mundiventures.com "fintech" OR "latam fund"',
+    'site:seaya.vc "fintech" OR "cathay latam"',
+    
+    'site:openvc.app "fintech" ("Latin America" OR "LatAm") ("Madrid" OR "London")',
+    'site:dealroom.co "fintech" "invests in" ("Latin America" OR "LatAm") ("Spain" OR "UK")'
+]
+
+
+
+if has_target_location and has_latam_focus and has_fintech_focus and not is_unwanted:
+    sheet.append_row([title, link, snippet, query])
+    print(f"Logged Fintech Match: {link}")
     print("Starting SerpApi crawler...")
 
     for query in search_queries:
@@ -69,32 +73,20 @@ def main():
                             continue
     
                         text_to_check = (title + " " + snippet).lower()
-                        has_target_location = any(term in text_to_check for term in [
-                            "madrid", "spain", "españa", "london", "uk", "united kingdom"
-                        ])
-                        
-                        has_latam_focus = any(term in text_to_check for term in [
-                            "latam", "latin america", "américa latina", "brazil", "brasil", "mexico", "méxico", 
-                            "colombia", "chile", "argentina", "peru", "uruguay"
-                        ])
-                        
-                        has_investment_role = any(term in text_to_check for term in [
-                            "venture capital", "vc", "family office", "angel investor", "general partner", 
-                            "managing director", "investment director", "seed fund", "partner", "investor"
+
+                        has_fintech_focus = any(term in text_to_check for term in [
+                            "fintech", "financial technology", "insurtech", "paytech", "payments", 
+                            "banking", "lending", "embedded finance", "open banking", "crypto", "neobank"
                         ])
                         
                         is_unwanted = any(term in text_to_check for term in [
-                            "npl", "distressed", "real estate", "inmobiliario", "debt", "restructuring", 
-                            "esg", "sustainability", "consulting", "wealth management", "services", "legal", 
-                            "advisory", "concierge", "tax advisory", "private clients", "spear's 500"
+                            "real estate", "npl", "distressed", "esg", "sustainability", "consulting", 
+                            "wealth management", "services", "legal", "cfo", "outsourced", "advisory"
                         ])
                         
-                        if has_target_location and has_latam_focus and has_investment_role and not is_unwanted:
-                            if link not in existing_links:
-                                sheet.append_row([title, link, snippet, query])
-                                existing_links.add(link)
-                                print(f"Verified & Logged: {link}")
-
+                        if has_target_location and has_latam_focus and has_fintech_focus and not is_unwanted:
+                            sheet.append_row([title, link, snippet, query])
+                            print(f"Logged Fintech Match: {link}")
             except Exception as e:
                 print(f"Error executing query: {e}")
 
